@@ -8,4 +8,4 @@ The application will be on Android using the Kotlin language.
 
 # Tech
 
-The application will take advantage of [the numbers API] (http://numbersapi.com/)
+The application will take advantage of [the numbers API](http://numbersapi.com/)
