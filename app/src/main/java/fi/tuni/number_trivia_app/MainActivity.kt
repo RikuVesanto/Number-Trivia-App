@@ -1,6 +1,8 @@
 package fi.tuni.number_trivia_app
 
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -13,14 +15,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        println("trash")
+        val factList: ListView = findViewById(R.id.fact_list)
         val thread = Thread {
             try {
-
                 val randomFacts = getRandomFacts(5, "http://numbersapi.com/")
                 println("Here are some random number facts: ")
                 for (i in randomFacts) {
                     println(i)
+                }
+                this@MainActivity.runOnUiThread {
+                    val adapter = ArrayAdapter<String?>(
+                        this,
+                        R.layout.activity_listview, randomFacts
+                    )
+
+                    factList.adapter = adapter;
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
