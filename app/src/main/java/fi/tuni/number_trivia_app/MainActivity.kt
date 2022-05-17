@@ -19,16 +19,11 @@ class MainActivity : AppCompatActivity() {
         val thread = Thread {
             try {
                 val randomFacts = getRandomFacts(5, "http://numbersapi.com/")
-                println("Here are some random number facts: ")
-                for (i in randomFacts) {
-                    println(i)
-                }
                 this@MainActivity.runOnUiThread {
                     val adapter = ArrayAdapter<String?>(
                         this,
                         R.layout.activity_listview, randomFacts
                     )
-
                     factList.adapter = adapter;
                 }
             } catch (e: Exception) {
@@ -59,13 +54,10 @@ class MainActivity : AppCompatActivity() {
         val reader = BufferedReader(InputStreamReader(urlConnection.inputStream))
 
         reader.use {
-            var line: String? = null
-            do {
-                line = it.readLine()
-                sb.appendLine(line)
-            } while (line != null)
-            result = sb.toString()
+            var line: String? = it.readLine()
+                    sb.appendLine(line)
         }
+        result = sb.toString()
         return result
     }
 }
