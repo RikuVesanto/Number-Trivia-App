@@ -2,29 +2,47 @@ package fi.tuni.number_trivia_app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import java.io.BufferedInputStream
 import java.io.BufferedReader
-import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import kotlin.random.Random
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        println("trash")
         val thread = Thread {
             try {
-                println("Here is a fact about numbers: " + getFacts("http://numbersapi.com/42"))
+
+                val randomFacts = getRandomFacts(5, "http://numbersapi.com/")
+                println("Here are some random number facts: ")
+                for (i in randomFacts) {
+                    println(i)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
-
         thread.start()
     }
 
-    fun getFacts(apiCall: String) : String? {
+    private fun getRandomFacts (amount: Int, url: String) : Array<String?> {
+        var randomFacts : Array<String?> = arrayOfNulls<String?>(amount)
+        val randomInts = generateSequence { Random.nextInt(1,100) }
+            .distinct()
+            .take(6)
+            .sorted()
+            .toSet()
+        for (x in 1..amount) {
+            randomFacts[x - 1] = getFacts(url + randomInts.elementAtOrNull(x))
+        }
+        return randomFacts
+    }
+
+    private fun getFacts(apiCall: String) : String? {
         var result: String? = null
         val sb = StringBuffer()
         val url = URL(apiCall)
