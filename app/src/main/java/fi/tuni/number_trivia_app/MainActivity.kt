@@ -1,8 +1,8 @@
 package fi.tuni.number_trivia_app
 
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -15,6 +15,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val myEditText = findViewById<View>(R.id.number_input) as EditText
+        val searchResult: TextView = findViewById(R.id.search_result)
+        val button: Button = findViewById(R.id.button_id)
+        button.setOnClickListener {
+            val thread = Thread {
+                try {
+                    val result = getFacts("http://numbersapi.com/" + myEditText.text.toString())
+                    this@MainActivity.runOnUiThread {
+                        searchResult.text = result
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            thread.start()
+        }
         val factList: ListView = findViewById(R.id.fact_list)
         val thread = Thread {
             try {
