@@ -5,12 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
 import kotlin.random.Random
 import android.widget.*
+import fi.tuni.number_trivia_app.utils.ApiCalls;
+
 
 class RandomFactsFragment : Fragment() {
 
@@ -31,7 +29,8 @@ class RandomFactsFragment : Fragment() {
         val thread = Thread {
             try {
                 var numberList =  ArrayList<Int>(getRandomNumbers(5));
-                val randomFacts = getListOfFacts(numberList, "http://numbersapi.com/")
+                var apiCalls = ApiCalls()
+                val randomFacts = apiCalls.getListOfFacts(numberList, "http://numbersapi.com/")
                 activity?.runOnUiThread {
 
                     val adapter = activity?.let {
@@ -55,28 +54,5 @@ class RandomFactsFragment : Fragment() {
             .take(amount)
             .sorted()
             .toSet()
-    }
-
-    private fun getListOfFacts (numberList: ArrayList<Int>, url: String) : Array<String?> {
-        val facts : Array<String?> = arrayOfNulls<String?>(numberList.size)
-        for (x in 1..numberList.size) {
-            facts[x - 1] = getFact(url + numberList.elementAtOrNull(x))
-        }
-        return facts
-    }
-
-    private fun getFact(apiCall: String) : String {
-        var result: String? = null
-        val sb = StringBuffer()
-        val url = URL(apiCall)
-        val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-        val reader = BufferedReader(InputStreamReader(urlConnection.inputStream))
-
-        reader.use {
-            val line: String? = it.readLine()
-            sb.appendLine(line)
-        }
-        result = sb.toString()
-        return result
     }
 }
