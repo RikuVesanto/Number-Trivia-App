@@ -30,7 +30,8 @@ class RandomFactsFragment : Fragment() {
         val factList: ListView = view.findViewById(R.id.fact_list)
         val thread = Thread {
             try {
-                val randomFacts = getRandomFacts(5, "http://numbersapi.com/")
+                var numberList =  ArrayList<Int>(getRandomNumbers(5));
+                val randomFacts = getListOfFacts(numberList, "http://numbersapi.com/")
                 activity?.runOnUiThread {
 
                     val adapter = activity?.let {
@@ -48,20 +49,23 @@ class RandomFactsFragment : Fragment() {
         thread.start()
     }
 
-    private fun getRandomFacts (amount: Int, url: String) : Array<String?> {
-        val randomFacts : Array<String?> = arrayOfNulls<String?>(amount)
-        val randomInts = generateSequence { Random.nextInt(1,100) }
+    private fun getRandomNumbers(amount: Int): Set<Int> {
+        return generateSequence { Random.nextInt(1, 100) }
             .distinct()
-            .take(6)
+            .take(amount)
             .sorted()
             .toSet()
-        for (x in 1..amount) {
-            randomFacts[x - 1] = getFacts(url + randomInts.elementAtOrNull(x))
-        }
-        return randomFacts
     }
 
-    private fun getFacts(apiCall: String) : String {
+    private fun getListOfFacts (numberList: ArrayList<Int>, url: String) : Array<String?> {
+        val facts : Array<String?> = arrayOfNulls<String?>(numberList.size)
+        for (x in 1..numberList.size) {
+            facts[x - 1] = getFact(url + numberList.elementAtOrNull(x))
+        }
+        return facts
+    }
+
+    private fun getFact(apiCall: String) : String {
         var result: String? = null
         val sb = StringBuffer()
         val url = URL(apiCall)
