@@ -24,34 +24,49 @@ class SaveFactFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
+        val apiCalls = ApiCalls()
         val sharedPrefs = SharedPrefs()
+        var favoriteNumbers = sharedPrefs.getFavoriteFacts(activity)
+        var favorites: Array<String?>
+        lateinit var adapter: ArrayAdapter<String?>;
+
+        val factList: ListView = view.findViewById(R.id.fact_list)
         val myEditText = view.findViewById<View>(R.id.number_input) as EditText
         val button: Button = view.findViewById(R.id.button_id)
         button.setOnClickListener {
             val thread = Thread {
                 try {
                     sharedPrefs.saveFavoriteFact(Integer.parseInt(myEditText.text.toString()), activity)
+                    myEditText.setText("")
+                    //update listview data
+                    favoriteNumbers = sharedPrefs.getFavoriteFacts(activity)
+                    favorites = apiCalls.getListOfFacts(favoriteNumbers,"http://numbersapi.com/")
+                    activity?.runOnUiThread {
+                        adapter = activity?.let {
+                            ArrayAdapter<String?>(
+                                it,
+                                R.layout.activity_listview, favorites
+                            )
+                        }!!
+                        factList.adapter = adapter;
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
             thread.start()
         }
-        val factList: ListView = view.findViewById(R.id.fact_list)
-
-        val favoriteNumbers = sharedPrefs.getFavoriteFacts(activity)
 
         val thread = Thread {
             try {
-                val apiCalls = ApiCalls()
-                val favorites = apiCalls.getListOfFacts(favoriteNumbers,"http://numbersapi.com/")
+                favorites = apiCalls.getListOfFacts(favoriteNumbers,"http://numbersapi.com/")
                 activity?.runOnUiThread {
-                    val adapter = activity?.let {
+                    adapter = activity?.let {
                         ArrayAdapter<String?>(
                             it,
                             R.layout.activity_listview, favorites
                         )
-                    }
+                    }!!
                     factList.adapter = adapter;
                 }
             } catch (e: Exception) {
