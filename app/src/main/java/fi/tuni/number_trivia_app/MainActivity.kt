@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,6 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val randomFactsFragment = RandomFactsFragment()
         val searchFactFragment = SearchFactFragment()
+        val saveFactFragment = SaveFactFragment()
         var bottomNavigationView : BottomNavigationView = findViewById(R.id.bottom_navigation)
         supportFragmentManager.beginTransaction().replace(R.id.container, randomFactsFragment).commit()
 
@@ -22,6 +22,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.searchFactsFragment-> {
                     supportFragmentManager.beginTransaction().replace(R.id.container, searchFactFragment).commit()
+                }
+                R.id.saveFactFragment-> {
+                    supportFragmentManager.beginTransaction().replace(R.id.container, saveFactFragment).commit()
                 }
             }
             return@setOnItemSelectedListener true

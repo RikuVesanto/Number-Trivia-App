@@ -7,4 +7,6 @@
     <item android:id="@+id/searchFactsFragment"
         android:title="Search Facts"/>
 
+    <item android:id="@+id/saveFactFragment"
+        android:title="Save Facts"/>
 </menu>
