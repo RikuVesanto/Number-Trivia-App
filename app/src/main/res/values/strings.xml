@@ -3,4 +3,7 @@
     <string name="title">Random Number Facts</string>
     <string name="search">Search</string>
     <string name="save">Save Fact</string>
+    <string name="save_number">Save Number</string>
+    <string name="add_number_title">Add Favorite Numbers</string>
+    <string name="favorites_title">Random Favorite Number Facts</string>
 </resources>

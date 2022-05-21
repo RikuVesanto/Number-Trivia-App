@@ -31,7 +31,7 @@ class SearchFactFragment : Fragment() {
         button.setOnClickListener {
             val thread = Thread {
                 try {
-                    var apiCalls = ApiCalls()
+                    val apiCalls = ApiCalls()
                     val result = apiCalls.getFact("http://numbersapi.com/" + myEditText.text.toString())
                     activity?.runOnUiThread {
                         searchResult.text = result

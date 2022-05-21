@@ -12,10 +12,8 @@ class SharedPrefs {
 
         val st = StringTokenizer(favoritesString, ",")
         var favorites = ArrayList<Int>()
-        println("token amount:  " + (st.countTokens()).toString())
         for (i in 0 until st.countTokens()) {
-            println("token:  " + st.nextToken())
-            favorites.add(st.nextToken().toInt())
+            favorites.add(Integer.parseInt(st.nextToken()))
         }
         return favorites
     }

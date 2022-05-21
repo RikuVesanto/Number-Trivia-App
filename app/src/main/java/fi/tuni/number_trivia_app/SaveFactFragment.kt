@@ -1,13 +1,11 @@
 package fi.tuni.number_trivia_app
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import java.util.*
 import fi.tuni.number_trivia_app.utils.ApiCalls;
 import fi.tuni.number_trivia_app.utils.SharedPrefs;
 
@@ -26,19 +24,40 @@ class SaveFactFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
-        val factList: ListView = view.findViewById(R.id.fact_list)
         val sharedPrefs = SharedPrefs()
+        val myEditText = view.findViewById<View>(R.id.number_input) as EditText
+        val button: Button = view.findViewById(R.id.button_id)
+        button.setOnClickListener {
+            val thread = Thread {
+                try {
+                    sharedPrefs.saveFavoriteFact(Integer.parseInt(myEditText.text.toString()), activity)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            thread.start()
+        }
+        val factList: ListView = view.findViewById(R.id.fact_list)
+
         val favoriteNumbers = sharedPrefs.getFavoriteFacts(activity)
 
-        var apiCalls = ApiCalls()
-        val favorites = apiCalls.getListOfFacts(favoriteNumbers,"http://numbersapi.com/")
-
-        val adapter = activity?.let {
-            ArrayAdapter<String?>(
-                it,
-                R.layout.activity_listview, favorites
-            )
+        val thread = Thread {
+            try {
+                val apiCalls = ApiCalls()
+                val favorites = apiCalls.getListOfFacts(favoriteNumbers,"http://numbersapi.com/")
+                activity?.runOnUiThread {
+                    val adapter = activity?.let {
+                        ArrayAdapter<String?>(
+                            it,
+                            R.layout.activity_listview, favorites
+                        )
+                    }
+                    factList.adapter = adapter;
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
-        factList.adapter = adapter;
+        thread.start()
         }
 }

@@ -28,8 +28,8 @@ class RandomFactsFragment : Fragment() {
         val factList: ListView = view.findViewById(R.id.fact_list)
         val thread = Thread {
             try {
-                var numberList =  ArrayList<Int>(getRandomNumbers(5));
-                var apiCalls = ApiCalls()
+                val numberList =  ArrayList<Int>(getRandomNumbers(5));
+                val apiCalls = ApiCalls()
                 val randomFacts = apiCalls.getListOfFacts(numberList, "http://numbersapi.com/")
                 activity?.runOnUiThread {
 
