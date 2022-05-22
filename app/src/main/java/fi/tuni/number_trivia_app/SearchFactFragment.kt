@@ -31,10 +31,12 @@ class SearchFactFragment : Fragment() {
         button.setOnClickListener {
             val thread = Thread {
                 try {
-                    val apiCalls = ApiCalls()
-                    val result = apiCalls.getFact("http://numbersapi.com/" + myEditText.text.toString())
-                    activity?.runOnUiThread {
-                        searchResult.text = result
+                    if (myEditText.text.toString() != "") {
+                        val apiCalls = ApiCalls()
+                        val result = apiCalls.getFact("http://numbersapi.com/" + myEditText.text.toString())
+                        activity?.runOnUiThread {
+                            searchResult.text = result
+                        }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()

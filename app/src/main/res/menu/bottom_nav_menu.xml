@@ -8,5 +8,5 @@
         android:title="Search Facts"/>
 
     <item android:id="@+id/saveFactFragment"
-        android:title="Save Facts"/>
+        android:title="Favorite Numbers"/>
 </menu>

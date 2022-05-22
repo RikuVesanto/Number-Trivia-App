@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val randomFactsFragment = RandomFactsFragment()
         val searchFactFragment = SearchFactFragment()
-        val saveFactFragment = SaveFactFragment()
+        val saveFactFragment = FavoriteNumberFragment()
         var bottomNavigationView : BottomNavigationView = findViewById(R.id.bottom_navigation)
         supportFragmentManager.beginTransaction().replace(R.id.container, randomFactsFragment).commit()
 

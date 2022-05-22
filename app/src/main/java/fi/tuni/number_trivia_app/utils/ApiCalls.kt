@@ -7,6 +7,14 @@ import java.net.URL
 
 class ApiCalls {
 
+    /**
+     * Gets a list of number facts.
+     *
+     * @param numberList list of numbers that are retrieved from the api
+     * @param url the base url for the api call
+     * @return an arrayList of number facts
+     */
+
     fun getListOfFacts (numberList: ArrayList<Int>, url: String) : Array<String?> {
         val facts : Array<String?> = arrayOfNulls<String?>(numberList.size)
         for (x in 1..numberList.size) {
@@ -15,7 +23,14 @@ class ApiCalls {
         return facts
     }
 
-     fun getFact(apiCall: String) : String {
+    /**
+     * Retrieves data from the given api url.
+     *
+     * @param apiCall url for the api
+     * @return the retrieved text string from the api
+     */
+
+    fun getFact(apiCall: String) : String {
         var result: String? = null
         val sb = StringBuffer()
         val url = URL(apiCall)

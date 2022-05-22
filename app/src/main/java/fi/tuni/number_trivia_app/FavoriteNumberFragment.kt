@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import fi.tuni.number_trivia_app.utils.ApiCalls;
 import fi.tuni.number_trivia_app.utils.SharedPrefs;
 
-class SaveFactFragment : Fragment() {
+class FavoriteNumberFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,7 @@ class SaveFactFragment : Fragment() {
     {
         val apiCalls = ApiCalls()
         val sharedPrefs = SharedPrefs()
-        var favoriteNumbers = sharedPrefs.getFavoriteFacts(activity)
+        var favoriteNumbers = sharedPrefs.getFavoriteNumbers(activity)
         var favorites: Array<String?>
         lateinit var adapter: ArrayAdapter<String?>;
 
@@ -34,14 +34,14 @@ class SaveFactFragment : Fragment() {
         val myEditText = view.findViewById<View>(R.id.number_input) as EditText
         val button: Button = view.findViewById(R.id.button_id)
         button.setOnClickListener {
-            var currentNumbers = sharedPrefs.getFavoriteFacts(activity)
+            var currentNumbers = sharedPrefs.getFavoriteNumbers(activity)
             if (myEditText.text.toString() != "" && !currentNumbers.contains(Integer.parseInt(myEditText.text.toString()))) {
                 val thread = Thread {
                     try {
-                        sharedPrefs.saveFavoriteFact(Integer.parseInt(myEditText.text.toString()), activity)
+                        sharedPrefs.saveFavoriteNumbers(Integer.parseInt(myEditText.text.toString()), activity)
                         myEditText.setText("")
                         //update listview data
-                        favoriteNumbers = sharedPrefs.getFavoriteFacts(activity)
+                        favoriteNumbers = sharedPrefs.getFavoriteNumbers(activity)
                         favorites = apiCalls.getListOfFacts(favoriteNumbers,"http://numbersapi.com/")
                         activity?.runOnUiThread {
                             adapter = activity?.let {

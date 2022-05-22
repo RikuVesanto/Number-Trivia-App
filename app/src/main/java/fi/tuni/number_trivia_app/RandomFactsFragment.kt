@@ -48,6 +48,13 @@ class RandomFactsFragment : Fragment() {
         thread.start()
     }
 
+    /**
+     * Randomizes a given amount of numbers and returns a number set of them with no duplicates
+     *
+     * @param amount the amount of numbers that are to be randomized
+     * @return a randomized set of Int
+     */
+
     private fun getRandomNumbers(amount: Int): Set<Int> {
         return generateSequence { Random.nextInt(1, 100) }
             .distinct()
